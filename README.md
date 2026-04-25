@@ -1,28 +1,31 @@
-﻿# FuelMind
+# FuelMind
 
-FuelMind ist eine lokal betreibbare Benzinpreis-Intelligence-App fuer private Nutzung. Die Anwendung kombiniert aktuelle Tankerkoenig-Abfragen mit lokaler Historisierung, Favoriten, Preisalarmen, heuristischen Empfehlungen und einer Docker-faehigen Architektur fuer NAS-Systeme wie UGREEN, Synology, QNAP oder generische Linux-Server.
+FuelMind ist eine lokal betreibbare Benzinpreis-App fuer private Nutzung. Die Anwendung kombiniert aktuelle Tankerkoenig-Abfragen mit lokaler Historisierung, Favoriten, Preisalarmen, Analysefunktionen und einer Docker-faehigen Architektur fuer NAS-Systeme und Linux-Server.
 
-## Funktionsumfang
+## Was FuelMind kann
 
-- Aktuelle Preise fuer E5, E10 und Diesel abrufen
-- Umkreissuche nach Tankstellen mit Preis- oder Distanzsortierung
-- Tankstellen lokal speichern und Preis-Snapshots historisieren
-- Favoriten verwalten und zyklisch aktualisieren
-- Preisalarme definieren und intern protokollieren
-- Dashboard fuer guenstige Tankstellen und Empfehlungen
-- Historische Kennzahlen und guenstige Zeitfenster analysieren
-- CSV-Importstruktur fuer spaetere historische Datenquellen vorbereiten
-- Prognosemodul heuristisch vorbereiten und modular fuer spaeteres ML entkoppeln
+- aktuelle Preise fuer E5, E10 und Diesel abrufen
+- Tankstellen im Umkreis nach Preis oder Distanz suchen
+- Favoriten lokal speichern und regelmaessig aktualisieren
+- Preisalarme fuer einen Standort und Suchradius anlegen
+- Preis-Snapshots historisieren und spaeter auswerten
+- lokale Empfehlungen und guenstige Zeitfenster ableiten
+- auf UGREEN, Synology, QNAP oder generischen Linux-Servern laufen
 
-## Architekturuebersicht
+## Architektur
 
-- `backend`: FastAPI, SQLAlchemy, APScheduler, Redis-Cache, Tankerkoenig-Client
-- `frontend`: React, Vite, TypeScript, Recharts
+- `frontend`: React, Vite, TypeScript
+- `backend`: FastAPI, SQLAlchemy, APScheduler
 - `postgres`: PostgreSQL 16 mit PostGIS
 - `redis`: Cache fuer API-Abfragen
-- optional `adminer` und `grafana` ueber Compose-Profile
 
-Mehr Details stehen in [docs/architecture.md](docs/architecture.md).
+Mehr Details:
+
+- [Architektur](docs/architecture.md)
+- [API](docs/api.md)
+- [Datenmodell](docs/data_model.md)
+- [Roadmap](docs/roadmap.md)
+- [Screenshot-Guide](docs/SCREENSHOTS.md)
 
 ## Voraussetzungen
 
@@ -30,29 +33,39 @@ Mehr Details stehen in [docs/architecture.md](docs/architecture.md).
 - gueltiger Tankerkoenig-API-Key
 - lokales oder privates Netzwerk fuer den Betrieb
 
-## Installation
+## Schnellstart
 
-1. Projekt in ein Zielverzeichnis kopieren.
+1. Projekt kopieren oder klonen.
 2. `.env.example` nach `.env` kopieren.
-3. Tankerkoenig-API-Key und ggf. Standardstandort eintragen.
-4. Stack starten.
+3. `TANKERKOENIG_API_KEY` und `POSTGRES_PASSWORD` setzen.
+4. Stack starten:
 
-## `.env`-Konfiguration
+```bash
+docker compose up -d
+```
+
+Danach ist die Anwendung typischerweise unter diesen Adressen erreichbar:
+
+- Frontend: `http://localhost:3000`
+- Backend/OpenAPI: `http://localhost:8000/docs`
+- Healthcheck: `http://localhost:8000/api/health`
+
+## Wichtige `.env`-Werte
 
 Pflicht:
 
 - `TANKERKOENIG_API_KEY`
 - `POSTGRES_PASSWORD`
 
-Wichtige Standardwerte:
+Haeufig angepasst:
 
-- `ALLOW_PUBLIC_API=false`
-- `ENABLE_SCHEDULER=true`
 - `DEFAULT_LAT`
 - `DEFAULT_LNG`
 - `DEFAULT_RADIUS_KM=10`
 - `DEFAULT_FUEL_TYPE=e10`
+- `ENABLE_SCHEDULER=true`
 - `FRONTEND_API_BASE_URL=http://localhost:8000/api`
+- `ALLOW_PUBLIC_API=false`
 
 Optional:
 
@@ -62,7 +75,7 @@ Optional:
 - `NTFY_TOPIC`
 - `TELEGRAM_*`
 
-## Docker-Start
+## Docker-Befehle
 
 ```bash
 docker compose up -d
@@ -71,7 +84,14 @@ docker compose down
 docker compose down -v
 ```
 
-Auf dem NAS kannst du alternativ das Hilfsskript [fuelmind.sh](fuelmind.sh) nutzen:
+Optional:
+
+- `docker compose --profile tools up -d adminer`
+- `docker compose --profile observability up -d grafana`
+
+## Betrieb auf dem NAS
+
+Auf dem NAS kannst du das Hilfsskript [fuelmind.sh](fuelmind.sh) nutzen:
 
 ```bash
 bash fuelmind.sh
@@ -80,7 +100,7 @@ bash fuelmind.sh logs
 bash fuelmind.sh stop
 ```
 
-Wenn du auf dem NAS lieber direkt nur `fuelmind` tippen willst, installiere einmal den Wrapper aus [install-fuelmind-command.sh](install-fuelmind-command.sh):
+Wenn du auf dem NAS lieber direkt nur `fuelmind` tippen willst:
 
 ```bash
 bash install-fuelmind-command.sh
@@ -89,7 +109,9 @@ fuelmind
 fuelmind status
 ```
 
-Fuer Windows gibt es ausserdem das Synchronisationsskript [sync-to-nas.ps1](sync-to-nas.ps1), das den Projektordner nach `Z:\docker\fuelmind` kopiert:
+## Windows-Workflow
+
+Das Skript [sync-to-nas.ps1](sync-to-nas.ps1) kopiert den Projektordner nach `Z:\docker\fuelmind`:
 
 ```powershell
 cd C:\Users\dietm\Documents\Codex\2026-04-21-du-bist-codex-und-arbeitest-als\fuelmind
@@ -97,6 +119,7 @@ powershell -ExecutionPolicy Bypass -File .\sync-to-nas.ps1
 ```
 
 Standardverhalten:
+
 - `.env` wird aus Sicherheitsgruenden nicht automatisch auf das NAS kopiert
 - wenn du sie bewusst mitsynchronisieren willst:
 
@@ -104,22 +127,20 @@ Standardverhalten:
 powershell -ExecutionPolicy Bypass -File .\sync-to-nas.ps1 -IncludeEnvFile
 ```
 
-Danach auf dem NAS:
+Danach auf dem NAS bei Bedarf:
 
 ```bash
 fuelmind rebuild
 ```
 
-Optional:
+## Funktionen im Ueberblick
 
-- `docker compose --profile tools up -d adminer`
-- `docker compose --profile observability up -d grafana`
-
-## Nutzung
-
-- Frontend: `http://localhost:3000`
-- Backend/OpenAPI: `http://localhost:8000/docs`
-- Healthcheck: `http://localhost:8000/api/health`
+- Dashboard: guenstige Tankstellen, Empfehlung und schneller Ueberblick
+- Stationssuche: Umkreissuche, Standortwahl, Favoritenanlage
+- Favoriten: lokal gespeicherte Tankstellen und letzte Snapshots
+- Preisalarme: Regeln nach Standort, Radius und Preisgrenze
+- Analyse: Stundenprofile, Historie und guenstige Zeitfenster
+- Einstellungen: Standardstandort, Standardfilter und Scheduler-Status
 
 ## Backend-Endpunkte
 
@@ -146,15 +167,6 @@ Optional:
 
 Beispiele stehen in [docs/api.md](docs/api.md) und [scripts/example_requests.http](scripts/example_requests.http).
 
-## Frontend-Nutzung
-
-- Dashboard: guenstigste Tankstellen, Radius, Kraftstoffwahl, Empfehlung
-- Stationssuche: gezielte Umkreissuche und Favoritenanlage
-- Favoriten: letzte lokale Snapshots
-- Preisalarme: Regeln anlegen und Historie einsehen
-- Analyse: Stundenprofile und guenstige Zeitfenster
-- Einstellungen: Standortdefaults, Scheduler-Status, Rechtshinweise
-
 ## Datenmodell
 
 Die wichtigsten Tabellen:
@@ -167,46 +179,47 @@ Die wichtigsten Tabellen:
 - `alert_events`
 - `app_settings`
 
-Details: [docs/data_model.md](docs/data_model.md)
+Mehr dazu in [docs/data_model.md](docs/data_model.md).
 
 ## Scheduler
 
 - `sync_favorites_prices`: alle 10 Minuten
 - `check_alerts`: alle 5 Minuten
 - `cleanup_old_cache`: taeglich
-- deaktivierbar ueber `ENABLE_SCHEDULER=false`
 
-Wichtig: Der Scheduler arbeitet nur auf Favoriten und expliziten Alert-Radien. Es gibt keine deutschlandweite Massenabfrage.
+Der Scheduler kann ueber `ENABLE_SCHEDULER=false` deaktiviert werden.
 
-## Preisalarme
+Wichtig: FuelMind fuehrt keine deutschlandweite Massenabfrage durch. Automatische Jobs arbeiten nur auf Favoriten und expliziten Alert-Radien.
 
-Alerts speichern Ereignisse zunaechst intern in PostgreSQL. Externe Benachrichtigungskanaele wie E-Mail, Telegram, `ntfy`, Pushover oder Home Assistant sind ueber ENV vorbereitet, aber in Version 0.1 noch nicht vollstaendig umgesetzt.
+## Analyse und Prognose
 
-## Analyse- und Prognosekonzept
+FuelMind arbeitet lokal mit historischen Preis-Snapshots und leitet daraus einfache Empfehlungen ab.
 
-- Stundenprofile aus lokalen `price_snapshots`
-- historische Min/Max/Durchschnittswerte
+Aktuell vorbereitet:
+
+- Stundenprofile pro Tankstelle
+- Min/Max/Durchschnittswerte
 - guenstige Zeitfenster per Stundenaggregation
 - heuristische Empfehlung `tank_now`, `wait` oder `neutral`
 
-Beispielheuristik:
+Beispiel:
 
-- `tank_now`, wenn aktueller Preis unter dem 25%-Quantil der letzten 7 Tage liegt
-- `wait`, wenn der Preis deutlich ueber dem Durchschnitt liegt und spaeter historisch guenstigere Fenster auftreten
-- `neutral`, wenn Datenlage oder Preisniveau uneindeutig sind
+- `tank_now`, wenn der aktuelle Preis unter dem 25%-Quantil der letzten 7 Tage liegt
+- `wait`, wenn spaeter historisch guenstigere Zeitfenster auftreten
+- `neutral`, wenn die Datenlage uneindeutig ist
 
-## Historische Daten / CSV-Import
+## CSV-Import
 
-Das Skript [scripts/import_historical_prices.py](scripts/import_historical_prices.py) ist als Adapterstruktur vorbereitet:
+Das Skript [scripts/import_historical_prices.py](scripts/import_historical_prices.py) ist als Adapterstruktur fuer spaetere historische Datenquellen vorbereitet.
+
+Enthalten sind u. a.:
 
 - `detect_format()`
 - `validate_columns()`
 - `parse_row()`
 - `insert_batch()`
 
-Hinweis: Das exakte CSV-Format haengt von der Quelle ab und muss vor echtem Produktiveinsatz geprueft oder erweitert werden.
-
-## Rechtliche Hinweise / Datennutzung
+## Rechtliche Hinweise
 
 - FuelMind ist fuer private, lokale Nutzung vorgesehen.
 - Die Tankerkoenig-AGB und die Bedingungen der MTS-K sind einzuhalten.
@@ -226,22 +239,12 @@ Hinweis: Das exakte CSV-Format haengt von der Quelle ab und muss vor echtem Prod
 
 ## Tests
 
-Backend-Tests laufen mit `pytest` und verwenden nur gemockte externe API-Daten.
+Backend-Tests laufen mit `pytest` und verwenden nur gemockte externe API-Daten:
 
 ```bash
 cd backend
 pytest
 ```
-
-## Roadmap
-
-Siehe [docs/roadmap.md](docs/roadmap.md).
-
-## Wichtige Annahmen
-
-- Tankerkoenig-Endpunkte und Response-Mapping sind im Client gekapselt, damit spaetere API-Aenderungen leicht angepasst werden koennen.
-- In Testumgebungen wird das Geofeld fuer SQLite portabel gespeichert; im Compose-Stack ist PostGIS aktiv.
-- In Version 0.1 werden Alerts extern noch nicht zugestellt, sondern intern als Event-Historie gespeichert.
 
 ## Screenshots
 
@@ -249,17 +252,12 @@ Siehe [docs/roadmap.md](docs/roadmap.md).
 
 ### Desktop
 
-![Analyse](docs/images/screenshots/desktop/Analyse.jpg)
 ![Dashboard 01](docs/images/screenshots/desktop/Dashboard_01.jpg)
 ![Dashboard 02](docs/images/screenshots/desktop/Dashboard_02.jpg)
-![Einstellungen](docs/images/screenshots/desktop/Einstellungen.jpg)
-![Favoriten](docs/images/screenshots/desktop/Favoriten.jpg)
-![Preisalarm](docs/images/screenshots/desktop/Preisalarm.jpg)
 ![Stationssuche](docs/images/screenshots/desktop/Stationssuche.jpg)
+![Preisalarm](docs/images/screenshots/desktop/Preisalarm.jpg)
+![Favoriten](docs/images/screenshots/desktop/Favoriten.jpg)
+![Analyse](docs/images/screenshots/desktop/Analyse.jpg)
+![Einstellungen](docs/images/screenshots/desktop/Einstellungen.jpg)
 
 <!-- screenshots:end -->
-
-
-
-
-
