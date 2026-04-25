@@ -1,5 +1,7 @@
 # FuelMind API
 
+Diese Seite gibt einen kompakten Ueberblick ueber die wichtigsten Endpunkte des Backends. Die Beispiele sind bewusst kurz gehalten und dienen als Orientierung fuer Entwicklung, Tests und spaetere Integrationen.
+
 ## Health
 
 `GET /api/health`
@@ -16,6 +18,8 @@ Beispielantwort:
 ```
 
 ## Tankstellen
+
+Suche im Umkreis:
 
 `GET /api/stations/nearby?lat=51.45&lng=6.76&radius_km=10&fuel_type=e10&sort=price`
 
@@ -43,7 +47,11 @@ Beispielantwort:
 }
 ```
 
+Lokale Synchronisierung im Umkreis:
+
 `POST /api/stations/sync-nearby`
+
+Beispielpayload:
 
 ```json
 {
@@ -54,6 +62,10 @@ Beispielantwort:
   "sort": "price"
 }
 ```
+
+Weitere Endpunkte:
+
+- `GET /api/stations/{station_id}`
 
 ## Preise
 
@@ -84,7 +96,7 @@ Beispielpayload fuer `POST /api/favorites`:
 - `DELETE /api/alerts/{id}`
 - `POST /api/alerts/check-now`
 
-## Analytics und Prediction
+## Analyse und Prognose
 
 - `GET /api/analytics/station/{station_id}?fuel_type=e10&days=7`
 - `GET /api/analytics/best-time?lat=51.45&lng=6.76&radius_km=10&fuel_type=e10`
@@ -94,3 +106,9 @@ Beispielpayload fuer `POST /api/favorites`:
 
 - `GET /api/settings`
 - `PUT /api/settings/defaults`
+
+## Hinweise
+
+- Viele Endpunkte arbeiten mit Koordinaten, Radius und Kraftstofftyp.
+- Such- und Preisendpunkte koennen Live-Daten, Cache und lokale Historie kombinieren.
+- Fuer Entwicklung und manuelle Tests eignet sich auch [scripts/example_requests.http](../scripts/example_requests.http).

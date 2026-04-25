@@ -1,39 +1,65 @@
 # Datenmodell
 
-## Tabellen
+FuelMind speichert nicht nur Live-Ergebnisse, sondern baut eine lokale Historie fuer Analyse, Favoriten und Preisalarme auf. Die wichtigsten Tabellen sind unten kurz beschrieben.
 
-### `stations`
+## `stations`
+
+Speichert Stammdaten der Tankstellen.
 
 - `id`: interne UUID
-- `external_station_id`: eindeutige Tankerkönig-ID
+- `external_station_id`: externe Tankerkoenig-ID
 - `name`, `brand`, `street`, `house_number`, `post_code`, `city`
 - `lat`, `lng`
-- `location`: PostGIS-Point bzw. WKT-kompatibler Punkt in Testumgebungen
+- `location`: Geopunkt fuer PostGIS oder portable Testdarstellung
 - `is_active`, `created_at`, `updated_at`
 
-### `price_snapshots`
+## `price_snapshots`
 
-- ein Datensatz pro Station, Kraftstofftyp und Beobachtungszeitpunkt
-- Grundlage fuer Historie, Alerts, Analysen und spaetere Prognosen
+Speichert beobachtete Preise pro Station, Kraftstofftyp und Zeitpunkt.
 
-### `price_changes`
+Diese Tabelle ist die Grundlage fuer:
 
-- komprimierte Preiswechsel-Tabelle mit E5/E10/Diesel pro Zeitpunkt
-- vorbereitet fuer spaetere Export- oder Event-Auswertungen
+- Verlaufsansichten
+- Analyse
+- Alert-Pruefungen
+- heuristische Empfehlungen
 
-### `favorite_stations`
+## `price_changes`
 
-- lokale Favoritenliste mit optionalem Label
+Speichert komprimierte Preiswechsel und bereitet spaetere Event- oder Exportauswertungen vor.
 
-### `alert_rules`
+## `favorite_stations`
 
-- Suchradius, Kraftstofftyp, Preisgrenze, Benachrichtigungskanal und Aktivierungsstatus
+Verwaltet lokal markierte Tankstellen mit optionalem Label.
 
-### `alert_events`
+## `alert_rules`
 
-- interne Historie ausgelöster Preisalarme inklusive Lieferstatus
+Enthaelt die vom Nutzer definierten Regeln fuer Preisalarme.
 
-### `app_settings`
+Typische Inhalte:
 
-- einfache Key-Value-Tabelle fuer Standardstandort und Standardfilter
+- Standort
+- Radius
+- Kraftstofftyp
+- Preisgrenze
+- Aktivierungsstatus
+- Benachrichtigungskanal
 
+## `alert_events`
+
+Speichert ausgeloeste Preisalarm-Ereignisse inklusive interner Historie und spaeter moeglichem Lieferstatus.
+
+## `app_settings`
+
+Einfache Key-Value-Tabelle fuer Standardwerte wie Standort, Radius oder Filter.
+
+## Modellidee
+
+Die Modellierung trennt klar zwischen:
+
+- Stammdaten einer Tankstelle
+- beobachteten Preisen ueber die Zeit
+- nutzerbezogenen Regeln wie Favoriten und Alerts
+- globalen App-Einstellungen
+
+Dadurch bleiben Live-Suche, Historie und Personalisierung sauber voneinander getrennt.

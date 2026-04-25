@@ -2,38 +2,75 @@
 
 ## Zielbild
 
-FuelMind ist als lokal betreibbare, private Benzinpreis-Intelligence-App fuer NAS-Systeme und Linux-Server aufgebaut. Das Projekt trennt klar zwischen:
+FuelMind ist als lokal betreibbare Benzinpreis-App fuer private Nutzung aufgebaut. Das Projekt trennt klar zwischen Oberflaeche, API, Datenhaltung und Hintergrundjobs, damit der Stack auf NAS-Systemen und Linux-Servern stabil, nachvollziehbar und spaeter erweiterbar bleibt.
 
-- `frontend`: React/Vite/TypeScript fuer die private Weboberflaeche
-- `backend`: FastAPI fuer API, Persistenz, Scheduler und Fachlogik
-- `postgres`: lokale Speicherung von Stammdaten, Snapshots, Preisveraenderungen und Alert-Historie
-- `redis`: Cache fuer Tankerkönig-Anfragen und leichte Entkopplung der Zugriffe
+## Hauptkomponenten
+
+- `frontend`: React, Vite und TypeScript fuer die private Weboberflaeche
+- `backend`: FastAPI fuer API, Fachlogik, Persistenz und Scheduler
+- `postgres`: PostgreSQL mit PostGIS fuer Stammdaten, Snapshots und Alerts
+- `redis`: Cache fuer externe API-Abfragen und kurze Zwischenspeicherung
 
 ## Architekturprinzipien
 
-- Gezielte API-Nutzung: keine deutschlandweite Massenabfrage, nur standortbezogene Umkreissuchen, Favoriten und Alert-Radien
-- Graceful Degradation: FuelMind startet auch ohne erreichbare externe API oder Redis
-- Private-by-default: `ALLOW_PUBLIC_API=false` und optionaler `APP_INTERNAL_TOKEN`
-- Erweiterbarkeit: Analytics, historische CSV-Importe, Benachrichtigungen und ML-Prognosen sind modular vorbereitet
+- standortbezogene API-Nutzung statt deutschlandweiter Massenabfrage
+- private-by-default mit lokaler Bereitstellung
+- robuste Funktion auch bei eingeschraenkter externer Erreichbarkeit
+- klare Trennung zwischen Live-Abfrage, lokaler Historie und Auswertung
+- modulare Erweiterbarkeit fuer Benachrichtigungen, CSV-Importe und Prognosen
 
-## Backend-Module
+## Backend-Struktur
 
 - `api/`: REST-Endpunkte pro Fachbereich
-- `core/`: Konfiguration, Logging, Netz- und Token-Schutz
-- `db/`: SQLAlchemy-Modelle, Session-Handling, Alembic-Basis
-- `services/`: Tankerkönig-Client, Stationen, Preise, Alerts, Analytics, Prognosen
-- `scheduler/`: APScheduler-Jobs fuer Favoriten und Alert-Pruefungen
+- `core/`: Konfiguration, Logging und Sicherheitslogik
+- `db/`: Modelle, Session-Handling und Datenbankinitialisierung
+- `services/`: Tankerkoenig-Client, Preislogik, Favoriten, Alerts und Analyse
+- `scheduler/`: zeitgesteuerte Jobs fuer Synchronisierung und Pruefungen
 
 ## Datenfluss
 
-1. Frontend fragt Backend-Endpunkte ab.
-2. Backend nutzt den Tankerkönig-Client nur bedarfsorientiert.
-3. Responses werden validiert, gemappt, optional gecacht und dann in PostgreSQL persistiert.
-4. Analytics und Heuristiken arbeiten primaer auf lokalen historischen Snapshots.
+1. Das Frontend sendet Anfragen an das Backend.
+2. Das Backend validiert Parameter und liest zuerst vorhandene lokale Daten oder Cache-Eintraege.
+3. Nur bei Bedarf wird die externe Tankerkoenig-API angesprochen.
+4. Relevante Ergebnisse werden lokal gespeichert und fuer Analyse, Favoriten und Alerts wiederverwendet.
+5. Der Scheduler aktualisiert periodisch Favoritenpreise und prueft bestehende Preisalarme.
+
+## Speicherung
+
+In PostgreSQL werden unter anderem diese Informationen gehalten:
+
+- Tankstellen-Stammdaten
+- Preis-Snapshots
+- Preisveraenderungen
+- Favoriten
+- Alert-Regeln und Alert-Ereignisse
+- App-Standardeinstellungen
+
+Redis wird bewusst nur als Cache genutzt. Die eigentliche Historie liegt in PostgreSQL.
+
+## Scheduler-Rolle
+
+Der Scheduler uebernimmt Hintergrundaufgaben, solange das Backend laeuft:
+
+- Favoriten synchronisieren
+- Preisalarme pruefen
+- alte Cache-Eintraege bereinigen
+
+Dadurch bleiben die Live-Suche, die lokale Historie und die Alarm-Logik voneinander getrennt.
+
+## Erweiterungspunkte
+
+Die Architektur ist so vorbereitet, dass spaeter ohne grossen Umbau erweitert werden kann:
+
+- externe Benachrichtigungskanaele wie Telegram, `ntfy` oder E-Mail
+- CSV-Importe historischer Daten
+- weitergehende PostGIS-Auswertungen
+- Prognose- oder ML-Module
+- Dashboards und Observability-Komponenten
 
 ## Annahmen
 
-- Fuer Tests und portable Entwicklung kann das `location`-Feld in SQLite als WKT-String gespeichert werden.
-- In PostgreSQL/PostGIS wird das Feld als `POINT`-Geometrie angelegt.
-- Die genaue Tankerkönig-Response-Struktur ist in `services/tankerkoenig_client.py` gekapselt und damit leicht anpassbar.
-
+- FuelMind ist fuer private, lokale Nutzung gedacht.
+- Der wichtigste externe Datenlieferant ist die Tankerkoenig-API.
+- In Testumgebungen kann Geometrie vereinfacht gespeichert werden, im Compose-Stack ist PostGIS aktiv.
+- Externe Dienste koennen ausfallen, ohne dass die gesamte App unbrauchbar wird.
