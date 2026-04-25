@@ -22,7 +22,7 @@ FuelMind ist eine lokal betreibbare Benzinpreis-Intelligence-App fuer private Nu
 - `redis`: Cache fuer API-Abfragen
 - optional `adminer` und `grafana` ueber Compose-Profile
 
-Mehr Details stehen in [docs/architecture.md](/C:/Users/dietm/Documents/Codex/2026-04-21-du-bist-codex-und-arbeitest-als/fuelmind/docs/architecture.md).
+Mehr Details stehen in [docs/architecture.md](docs/architecture.md).
 
 ## Voraussetzungen
 
@@ -71,7 +71,7 @@ docker compose down
 docker compose down -v
 ```
 
-Auf dem NAS kannst du alternativ das Hilfsskript [fuelmind.sh](/C:/Users/dietm/Documents/Codex/2026-04-21-du-bist-codex-und-arbeitest-als/fuelmind/fuelmind.sh) nutzen:
+Auf dem NAS kannst du alternativ das Hilfsskript [fuelmind.sh](fuelmind.sh) nutzen:
 
 ```bash
 bash fuelmind.sh
@@ -80,7 +80,7 @@ bash fuelmind.sh logs
 bash fuelmind.sh stop
 ```
 
-Wenn du auf dem NAS lieber direkt nur `fuelmind` tippen willst, installiere einmal den Wrapper aus [install-fuelmind-command.sh](/C:/Users/dietm/Documents/Codex/2026-04-21-du-bist-codex-und-arbeitest-als/fuelmind/install-fuelmind-command.sh):
+Wenn du auf dem NAS lieber direkt nur `fuelmind` tippen willst, installiere einmal den Wrapper aus [install-fuelmind-command.sh](install-fuelmind-command.sh):
 
 ```bash
 bash install-fuelmind-command.sh
@@ -89,7 +89,7 @@ fuelmind
 fuelmind status
 ```
 
-Fuer Windows gibt es ausserdem das Synchronisationsskript [sync-to-nas.ps1](/C:/Users/dietm/Documents/Codex/2026-04-21-du-bist-codex-und-arbeitest-als/fuelmind/sync-to-nas.ps1), das den Projektordner nach `Z:\docker\fuelmind` kopiert:
+Fuer Windows gibt es ausserdem das Synchronisationsskript [sync-to-nas.ps1](sync-to-nas.ps1), das den Projektordner nach `Z:\docker\fuelmind` kopiert:
 
 ```powershell
 cd C:\Users\dietm\Documents\Codex\2026-04-21-du-bist-codex-und-arbeitest-als\fuelmind
@@ -144,7 +144,7 @@ Optional:
 - `GET /api/settings`
 - `PUT /api/settings/defaults`
 
-Beispiele stehen in [docs/api.md](/C:/Users/dietm/Documents/Codex/2026-04-21-du-bist-codex-und-arbeitest-als/fuelmind/docs/api.md) und [scripts/example_requests.http](/C:/Users/dietm/Documents/Codex/2026-04-21-du-bist-codex-und-arbeitest-als/fuelmind/scripts/example_requests.http).
+Beispiele stehen in [docs/api.md](docs/api.md) und [scripts/example_requests.http](scripts/example_requests.http).
 
 ## Frontend-Nutzung
 
@@ -167,7 +167,7 @@ Die wichtigsten Tabellen:
 - `alert_events`
 - `app_settings`
 
-Details: [docs/data_model.md](/C:/Users/dietm/Documents/Codex/2026-04-21-du-bist-codex-und-arbeitest-als/fuelmind/docs/data_model.md)
+Details: [docs/data_model.md](docs/data_model.md)
 
 ## Scheduler
 
@@ -197,7 +197,7 @@ Beispielheuristik:
 
 ## Historische Daten / CSV-Import
 
-Das Skript [scripts/import_historical_prices.py](/C:/Users/dietm/Documents/Codex/2026-04-21-du-bist-codex-und-arbeitest-als/fuelmind/scripts/import_historical_prices.py) ist als Adapterstruktur vorbereitet:
+Das Skript [scripts/import_historical_prices.py](scripts/import_historical_prices.py) ist als Adapterstruktur vorbereitet:
 
 - `detect_format()`
 - `validate_columns()`
@@ -235,7 +235,7 @@ pytest
 
 ## Roadmap
 
-Siehe [docs/roadmap.md](/C:/Users/dietm/Documents/Codex/2026-04-21-du-bist-codex-und-arbeitest-als/fuelmind/docs/roadmap.md).
+Siehe [docs/roadmap.md](docs/roadmap.md).
 
 ## Wichtige Annahmen
 
