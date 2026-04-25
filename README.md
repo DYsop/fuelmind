@@ -1,6 +1,6 @@
-# FuelMind
+﻿# FuelMind
 
-FuelMind ist eine lokal betreibbare Benzinpreis-Intelligence-App fuer private Nutzung. Die Anwendung kombiniert aktuelle Tankerkönig-Abfragen mit lokaler Historisierung, Favoriten, Preisalarmen, heuristischen Empfehlungen und einer Docker-faehigen Architektur fuer NAS-Systeme wie UGREEN, Synology, QNAP oder generische Linux-Server.
+FuelMind ist eine lokal betreibbare Benzinpreis-Intelligence-App fuer private Nutzung. Die Anwendung kombiniert aktuelle TankerkÃ¶nig-Abfragen mit lokaler Historisierung, Favoriten, Preisalarmen, heuristischen Empfehlungen und einer Docker-faehigen Architektur fuer NAS-Systeme wie UGREEN, Synology, QNAP oder generische Linux-Server.
 
 ## Funktionsumfang
 
@@ -16,7 +16,7 @@ FuelMind ist eine lokal betreibbare Benzinpreis-Intelligence-App fuer private Nu
 
 ## Architekturuebersicht
 
-- `backend`: FastAPI, SQLAlchemy, APScheduler, Redis-Cache, Tankerkönig-Client
+- `backend`: FastAPI, SQLAlchemy, APScheduler, Redis-Cache, TankerkÃ¶nig-Client
 - `frontend`: React, Vite, TypeScript, Recharts
 - `postgres`: PostgreSQL 16 mit PostGIS
 - `redis`: Cache fuer API-Abfragen
@@ -27,14 +27,14 @@ Mehr Details stehen in [docs/architecture.md](/C:/Users/dietm/Documents/Codex/20
 ## Voraussetzungen
 
 - Docker Engine mit Docker Compose Plugin
-- gueltiger Tankerkönig-API-Key
+- gueltiger TankerkÃ¶nig-API-Key
 - lokales oder privates Netzwerk fuer den Betrieb
 
 ## Installation
 
 1. Projekt in ein Zielverzeichnis kopieren.
 2. `.env.example` nach `.env` kopieren.
-3. Tankerkönig-API-Key und ggf. Standardstandort eintragen.
+3. TankerkÃ¶nig-API-Key und ggf. Standardstandort eintragen.
 4. Stack starten.
 
 ## `.env`-Konfiguration
@@ -209,7 +209,7 @@ Hinweis: Das exakte CSV-Format haengt von der Quelle ab und muss vor echtem Prod
 ## Rechtliche Hinweise / Datennutzung
 
 - FuelMind ist fuer private, lokale Nutzung vorgesehen.
-- Die Tankerkönig-AGB und die Bedingungen der MTS-K sind einzuhalten.
+- Die TankerkÃ¶nig-AGB und die Bedingungen der MTS-K sind einzuhalten.
 - Die Daten duerfen nicht automatisiert massenhaft abgefragt werden.
 - Die Daten duerfen nicht an Mineraloelunternehmen, Tankstellenbetreiber oder fuer diese taetige IT-Dienstleister weitergegeben werden.
 - Die bezogenen Datensaetze duerfen nicht als eigene API an Dritte weitergereicht werden.
@@ -220,7 +220,7 @@ Hinweis: Das exakte CSV-Format haengt von der Quelle ab und muss vor echtem Prod
 
 - `health` zeigt `database=error`: PostgreSQL-Container, Zugangsdaten und Volumes pruefen
 - `redis=error` oder `unavailable`: FuelMind laeuft weiter, aber ohne zentralen Cache
-- `503` bei Stationssuche: API-Key, Internetzugang und Tankerkönig-Verfuegbarkeit pruefen
+- `503` bei Stationssuche: API-Key, Internetzugang und TankerkÃ¶nig-Verfuegbarkeit pruefen
 - Frontend erreicht Backend nicht: `FRONTEND_API_BASE_URL` und Port-Mappings pruefen
 - Keine Empfehlungen: zuerst lokale Historie ueber Suche, Favoriten oder Scheduler aufbauen
 
@@ -239,14 +239,26 @@ Siehe [docs/roadmap.md](/C:/Users/dietm/Documents/Codex/2026-04-21-du-bist-codex
 
 ## Wichtige Annahmen
 
-- Tankerkönig-Endpunkte und Response-Mapping sind im Client gekapselt, damit spaetere API-Aenderungen leicht angepasst werden koennen.
+- TankerkÃ¶nig-Endpunkte und Response-Mapping sind im Client gekapselt, damit spaetere API-Aenderungen leicht angepasst werden koennen.
 - In Testumgebungen wird das Geofeld fuer SQLite portabel gespeichert; im Compose-Stack ist PostGIS aktiv.
 - In Version 0.1 werden Alerts extern noch nicht zugestellt, sondern intern als Event-Historie gespeichert.
 
 ## Screenshots
 
-![Dashboard](docs/images/screenshots/dashboard.png)
-![Stationssuche](docs/images/screenshots/stationssuche.png)
-![Preisalarm](docs/images/screenshots/preisalarm.png)
-![Analyse](docs/images/screenshots/analyse.png)
+<!-- screenshots:start -->
+
+### Desktop
+
+![Analyse](docs/images/screenshots/desktop/Analyse.jpg)
+![Dashboard 01](docs/images/screenshots/desktop/Dashboard_01.jpg)
+![Dashboard 02](docs/images/screenshots/desktop/Dashboard_02.jpg)
+![Einstellungen](docs/images/screenshots/desktop/Einstellungen.jpg)
+![Favoriten](docs/images/screenshots/desktop/Favoriten.jpg)
+![Preisalarm](docs/images/screenshots/desktop/Preisalarm.jpg)
+![Stationssuche](docs/images/screenshots/desktop/Stationssuche.jpg)
+
+<!-- screenshots:end -->
+
+
+
 
