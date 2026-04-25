@@ -1,0 +1,105 @@
+services:
+  backend:
+    container_name: fuelmind-backend
+    build:
+      context: ./backend
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-fuelmind}:${POSTGRES_PASSWORD:-fuelmind_password}@postgres:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-fuelmind}
+      REDIS_URL: redis://${REDIS_HOST:-redis}:${REDIS_PORT:-6379}/0
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - ./backend/app:/app/app
+      - ./backend/tests:/app/tests
+    restart: unless-stopped
+
+  frontend:
+    container_name: fuelmind-frontend
+    build:
+      context: ./frontend
+    environment:
+      API_BASE_URL: ${FRONTEND_API_BASE_URL:-http://localhost:8000/api}
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 15s
+    restart: unless-stopped
+
+  postgres:
+    container_name: fuelmind-postgres
+    image: postgis/postgis:16-3.4
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-fuelmind}
+      POSTGRES_USER: ${POSTGRES_USER:-fuelmind}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-fuelmind_password}
+    volumes:
+      - fuelmind_postgres_data:/var/lib/postgresql/data
+      - ./scripts/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-fuelmind} -d ${POSTGRES_DB:-fuelmind}"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    restart: unless-stopped
+
+  redis:
+    container_name: fuelmind-redis
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - fuelmind_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  adminer:
+    container_name: fuelmind-adminer
+    image: adminer:4
+    profiles: ["tools"]
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  grafana:
+    container_name: fuelmind-grafana
+    image: grafana/grafana:11.1.0
+    profiles: ["observability"]
+    ports:
+      - "3001:3000"
+    volumes:
+      - fuelmind_grafana_data:/var/lib/grafana
+    restart: unless-stopped
+
+volumes:
+  fuelmind_postgres_data:
+  fuelmind_redis_data:
+  fuelmind_grafana_data:

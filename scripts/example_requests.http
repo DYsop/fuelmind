@@ -1,0 +1,21 @@
+### Health
+GET http://localhost:8000/api/health
+
+### Nearby stations
+GET http://localhost:8000/api/stations/nearby?lat=51.45&lng=6.76&radius_km=10&fuel_type=e10&sort=price
+
+### Sync nearby
+POST http://localhost:8000/api/stations/sync-nearby
+Content-Type: application/json
+
+{
+  "lat": 51.45,
+  "lng": 6.76,
+  "radius_km": 10,
+  "fuel_type": "e10",
+  "sort": "price"
+}
+
+### Current prices
+GET http://localhost:8000/api/prices/current?station_ids=00000000-0000-0000-0000-000000000000
+

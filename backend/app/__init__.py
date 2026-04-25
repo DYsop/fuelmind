@@ -1,0 +1,2 @@
+"""FuelMind backend application package."""
+
