@@ -37,6 +37,7 @@ GitHub unterstuetzt fuer das Social Preview PNG, JPG oder GIF. Laut GitHub Docs 
 
 Vorbereitet im Repo:
 
+- `docs/images/branding/fuelmind_into.png`
 - `docs/images/branding/social-preview-template.svg`
 
 Empfohlener Text fuer das Vorschaubild:
@@ -50,7 +51,7 @@ Empfohlener Text fuer das Vorschaubild:
 1. `README` und Doku pushen
 2. Description setzen
 3. Topics setzen
-4. Social Preview Bild hochladen
+4. `docs/images/branding/fuelmind_into.png` als Social Preview Bild hochladen
 5. License und spaeter optional Releases pflegen
 
 ## Hinweise zur Auffindbarkeit
