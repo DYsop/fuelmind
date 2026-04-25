@@ -1,6 +1,6 @@
 ﻿# FuelMind
 
-FuelMind ist eine lokal betreibbare Benzinpreis-Intelligence-App fuer private Nutzung. Die Anwendung kombiniert aktuelle TankerkÃ¶nig-Abfragen mit lokaler Historisierung, Favoriten, Preisalarmen, heuristischen Empfehlungen und einer Docker-faehigen Architektur fuer NAS-Systeme wie UGREEN, Synology, QNAP oder generische Linux-Server.
+FuelMind ist eine lokal betreibbare Benzinpreis-Intelligence-App fuer private Nutzung. Die Anwendung kombiniert aktuelle Tankerkoenig-Abfragen mit lokaler Historisierung, Favoriten, Preisalarmen, heuristischen Empfehlungen und einer Docker-faehigen Architektur fuer NAS-Systeme wie UGREEN, Synology, QNAP oder generische Linux-Server.
 
 ## Funktionsumfang
 
@@ -16,7 +16,7 @@ FuelMind ist eine lokal betreibbare Benzinpreis-Intelligence-App fuer private Nu
 
 ## Architekturuebersicht
 
-- `backend`: FastAPI, SQLAlchemy, APScheduler, Redis-Cache, TankerkÃ¶nig-Client
+- `backend`: FastAPI, SQLAlchemy, APScheduler, Redis-Cache, Tankerkoenig-Client
 - `frontend`: React, Vite, TypeScript, Recharts
 - `postgres`: PostgreSQL 16 mit PostGIS
 - `redis`: Cache fuer API-Abfragen
@@ -27,14 +27,14 @@ Mehr Details stehen in [docs/architecture.md](docs/architecture.md).
 ## Voraussetzungen
 
 - Docker Engine mit Docker Compose Plugin
-- gueltiger TankerkÃ¶nig-API-Key
+- gueltiger Tankerkoenig-API-Key
 - lokales oder privates Netzwerk fuer den Betrieb
 
 ## Installation
 
 1. Projekt in ein Zielverzeichnis kopieren.
 2. `.env.example` nach `.env` kopieren.
-3. TankerkÃ¶nig-API-Key und ggf. Standardstandort eintragen.
+3. Tankerkoenig-API-Key und ggf. Standardstandort eintragen.
 4. Stack starten.
 
 ## `.env`-Konfiguration
@@ -209,7 +209,7 @@ Hinweis: Das exakte CSV-Format haengt von der Quelle ab und muss vor echtem Prod
 ## Rechtliche Hinweise / Datennutzung
 
 - FuelMind ist fuer private, lokale Nutzung vorgesehen.
-- Die TankerkÃ¶nig-AGB und die Bedingungen der MTS-K sind einzuhalten.
+- Die Tankerkoenig-AGB und die Bedingungen der MTS-K sind einzuhalten.
 - Die Daten duerfen nicht automatisiert massenhaft abgefragt werden.
 - Die Daten duerfen nicht an Mineraloelunternehmen, Tankstellenbetreiber oder fuer diese taetige IT-Dienstleister weitergegeben werden.
 - Die bezogenen Datensaetze duerfen nicht als eigene API an Dritte weitergereicht werden.
@@ -220,7 +220,7 @@ Hinweis: Das exakte CSV-Format haengt von der Quelle ab und muss vor echtem Prod
 
 - `health` zeigt `database=error`: PostgreSQL-Container, Zugangsdaten und Volumes pruefen
 - `redis=error` oder `unavailable`: FuelMind laeuft weiter, aber ohne zentralen Cache
-- `503` bei Stationssuche: API-Key, Internetzugang und TankerkÃ¶nig-Verfuegbarkeit pruefen
+- `503` bei Stationssuche: API-Key, Internetzugang und Tankerkoenig-Verfuegbarkeit pruefen
 - Frontend erreicht Backend nicht: `FRONTEND_API_BASE_URL` und Port-Mappings pruefen
 - Keine Empfehlungen: zuerst lokale Historie ueber Suche, Favoriten oder Scheduler aufbauen
 
@@ -239,7 +239,7 @@ Siehe [docs/roadmap.md](docs/roadmap.md).
 
 ## Wichtige Annahmen
 
-- TankerkÃ¶nig-Endpunkte und Response-Mapping sind im Client gekapselt, damit spaetere API-Aenderungen leicht angepasst werden koennen.
+- Tankerkoenig-Endpunkte und Response-Mapping sind im Client gekapselt, damit spaetere API-Aenderungen leicht angepasst werden koennen.
 - In Testumgebungen wird das Geofeld fuer SQLite portabel gespeichert; im Compose-Stack ist PostGIS aktiv.
 - In Version 0.1 werden Alerts extern noch nicht zugestellt, sondern intern als Event-Historie gespeichert.
 
