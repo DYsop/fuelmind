@@ -6,7 +6,25 @@ PROJECT_NAME="FuelMind"
 
 run_compose() {
   cd "$SCRIPT_DIR"
-  sudo docker compose "$@"
+  if docker info >/dev/null 2>&1; then
+    docker compose "$@"
+    return
+  fi
+
+  if sudo -n docker info >/dev/null 2>&1; then
+    sudo -n docker compose "$@"
+    return
+  fi
+
+  cat >&2 <<'EOF'
+Docker Compose ist fuer den aktuellen Benutzer noch nicht passwortlos freigegeben.
+
+Fuehre einmal das Setup fuer FuelMind-Docker-Rechte aus:
+  bash scripts/install_fuelmind_sudo.sh
+
+Danach funktionieren fuelmind.sh und die Windows-Starter automatisch.
+EOF
+  exit 1
 }
 
 show_help() {
@@ -73,4 +91,3 @@ case "$command" in
     exit 1
     ;;
 esac
-
