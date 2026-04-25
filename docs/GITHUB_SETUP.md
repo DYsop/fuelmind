@@ -51,7 +51,7 @@ Empfohlener Text fuer das Vorschaubild:
 2. Description setzen
 3. Topics setzen
 4. Social Preview Bild hochladen
-5. spaeter optional License und Releases pflegen
+5. License und spaeter optional Releases pflegen
 
 ## Hinweise zur Auffindbarkeit
 
@@ -62,6 +62,18 @@ GitHub-Repositories werden nicht wie klassische Webseiten ueber SEO gefunden. Wi
 - passende Topics
 - saubere README
 - aktive Commits und Releases
+
+## Lizenz-Empfehlung
+
+Empfohlen fuer dieses Projekt:
+
+- `MIT`
+
+Warum:
+
+- einfach und weit verbreitet
+- gut fuer ein Code-Repository mit self-hosted Fokus
+- trennt deinen Code sauber von den Nutzungsbedingungen externer APIs und Datenquellen
 
 ## Quellen
 

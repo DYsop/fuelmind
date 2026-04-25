@@ -243,6 +243,16 @@ Enthalten sind u. a.:
 - Die App ist kein Preissteuerungs- oder Preisoptimierungssystem fuer Tankstellen.
 - Nutzerinnen und Nutzer sind selbst fuer die Einhaltung der Nutzungsbedingungen verantwortlich.
 
+## Lizenz
+
+Der Quellcode dieses Repositories steht unter der [MIT-Lizenz](LICENSE).
+
+Wichtig:
+
+- Die MIT-Lizenz gilt fuer den Code in diesem Repository.
+- Externe APIs, Datenquellen, Marken, Kartenkacheln und Inhalte von Drittanbietern behalten ihre eigenen Nutzungsbedingungen.
+- Fuer die Nutzung der Tankerkoenig-Daten gelten weiterhin die jeweiligen API- und Datenbedingungen.
+
 ## Troubleshooting
 
 - `health` zeigt `database=error`: PostgreSQL-Container, Zugangsdaten und Volumes pruefen
