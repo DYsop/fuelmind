@@ -1,0 +1,28 @@
+<svg width="1280" height="640" viewBox="0 0 1280 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1280" y2="640" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0C2B24"/>
+      <stop offset="1" stop-color="#1F5A51"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="820" y1="140" x2="1130" y2="470" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4A8E82"/>
+      <stop offset="1" stop-color="#2E6E63"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1280" height="640" rx="28" fill="url(#bg)"/>
+  <circle cx="1130" cy="120" r="180" fill="#88C8B8" fill-opacity="0.08"/>
+  <circle cx="1040" cy="520" r="220" fill="#88C8B8" fill-opacity="0.06"/>
+
+  <text x="88" y="120" fill="#DDEBE7" font-family="Segoe UI, Arial, sans-serif" font-size="28" letter-spacing="5">FUELMIND</text>
+  <text x="88" y="250" fill="#FFFFFF" font-family="Segoe UI, Arial, sans-serif" font-size="86" font-weight="700">Private fuel price app</text>
+  <text x="88" y="342" fill="#FFFFFF" font-family="Segoe UI, Arial, sans-serif" font-size="86" font-weight="700">for NAS systems</text>
+  <text x="88" y="416" fill="#D7E8E3" font-family="Segoe UI, Arial, sans-serif" font-size="34">Local history, alerts, analytics and Docker deployment.</text>
+
+  <rect x="818" y="168" width="354" height="216" rx="28" fill="url(#panel)"/>
+  <text x="858" y="238" fill="#F4FBF8" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="600">Self-hosted</text>
+  <text x="858" y="292" fill="#FFFFFF" font-family="Segoe UI, Arial, sans-serif" font-size="34" font-weight="700">Tankerkoenig +</text>
+  <text x="858" y="334" fill="#FFFFFF" font-family="Segoe UI, Arial, sans-serif" font-size="34" font-weight="700">PostgreSQL + Redis</text>
+  <text x="858" y="392" fill="#E4F2EE" font-family="Segoe UI, Arial, sans-serif" font-size="22">Built for private networks, NAS</text>
+  <text x="858" y="424" fill="#E4F2EE" font-family="Segoe UI, Arial, sans-serif" font-size="22">systems and Linux servers.</text>
+</svg>

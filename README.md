@@ -2,6 +2,19 @@
 
 FuelMind ist eine lokal betreibbare Benzinpreis-App fuer private Nutzung. Die Anwendung kombiniert aktuelle Tankerkoenig-Abfragen mit lokaler Historisierung, Favoriten, Preisalarmen, Analysefunktionen und einer Docker-faehigen Architektur fuer NAS-Systeme und Linux-Server.
 
+> Private fuel price app for NAS systems with local history, alerts, analytics and Docker deployment.
+
+## Warum FuelMind?
+
+FuelMind richtet sich an Menschen, die Tankpreise lokal beobachten wollen, ohne ihre Daten oder ihren Workflow an einen fremden Cloud-Dienst abzugeben. Die App laeuft im eigenen Netzwerk, speichert Historie lokal und ist auf self-hosted Setups mit NAS oder Home-Server ausgelegt.
+
+**Highlights**
+
+- self-hosted und Docker-basiert
+- lokale Preis-Historie statt reiner Live-Abfrage
+- Favoriten, Preisalarme und Analyse in einer Anwendung
+- optimiert fuer NAS-Systeme und private Netzwerke
+
 ## Was FuelMind kann
 
 - aktuelle Preise fuer E5, E10 und Diesel abrufen
@@ -26,6 +39,7 @@ Mehr Details:
 - [Datenmodell](docs/data_model.md)
 - [Roadmap](docs/roadmap.md)
 - [Screenshot-Guide](docs/SCREENSHOTS.md)
+- [GitHub-Metadaten und Topics](docs/GITHUB_SETUP.md)
 
 ## Voraussetzungen
 
@@ -261,3 +275,10 @@ pytest
 ![Einstellungen](docs/images/screenshots/desktop/Einstellungen.jpg)
 
 <!-- screenshots:end -->
+
+## GitHub-Optimierung
+
+Fuer eine bessere GitHub-Startseite findest du hier vorbereitete Inhalte:
+
+- [Description, Topics und Social-Preview-Hinweise](docs/GITHUB_SETUP.md)
+- [Social-Preview-Vorlage](docs/images/branding/social-preview-template.svg)
